@@ -8,7 +8,6 @@ public class Address {
     String house;
     String apartment;
 
-
     public void address(String country, String province, String city, String street, String house, String apartment) {
         this.country = country;
         this.province = province;
@@ -57,5 +56,4 @@ public class Address {
     public void setCity(String city) {
         this.city = city;
     }
-
 }

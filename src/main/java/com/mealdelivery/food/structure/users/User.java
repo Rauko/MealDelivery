@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 @AllArgsConstructor
 @Document(collection = "users")
 public class User {
-
     @Id
     Integer id;
     String name;

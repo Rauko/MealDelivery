@@ -14,8 +14,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Document(collection = "menu")
 public class Menu {
-
-
     @Id
     Integer menuId;
     List<Position> position;
@@ -40,7 +38,4 @@ public class Menu {
     public void setMealSet(Set<Position> set) {
         this.mealSet.add(set);
     }
-
-
-
 }

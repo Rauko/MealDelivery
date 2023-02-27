@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public class ModeratorActions {
-
     @Autowired
     private MongoTemplate mongoTemplate;
 

@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Customer extends User {
-
     List<Address> addressBook;
     LinkedHashMap<Integer, String[]> userOrders;
 
