@@ -14,11 +14,11 @@ public class ManagerService {
         this.positionRepository = orderRepository;
     }
 
-    public List<Position> getAllTasks() {
+    public List<Position> getAllPositions() {
         return positionRepository.findAll();
     }
 
-    public Position addTask(String[] positionName, Double positionPrice, short weight, List<String> ingredients) {
+    public Position addPosition(String[] positionName, Double positionPrice, short weight, List<String> ingredients) {
         return positionRepository.insert(constructPosition(positionName,positionPrice,weight,ingredients));
     }
 
