@@ -69,7 +69,6 @@ public class ManagerService {
         for(int i = 0; i < positionId.length; i++){
             setOfPositions.add(positionRepository.findById(positionId[i]).orElse(null));
         }
-
         return Position.builder()
                 .positionName(new String[]{"New Position!"})
                 .positionPrice(setOfPositions.stream()
