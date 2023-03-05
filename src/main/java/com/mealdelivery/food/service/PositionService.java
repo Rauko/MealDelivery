@@ -64,10 +64,7 @@ public class PositionService {
     }
 
     public Position makeMealSet(Integer... positionId) {
-        List<Position> setOfPositions = new ArrayList<>();
-        for(int i = 0; i < positionId.length; i++){
-            setOfPositions.add(positionRepository.findById(positionId[i]).orElse(null));
-        }
+        List<Position> setOfPositions = arrayToListPositions(positionId);
         return Position.builder()
                 .positionName(new String[]{"New Position!"})
                 .positionPrice(setOfPositions.stream()
@@ -106,5 +103,13 @@ public class PositionService {
         Position currentPosition = positionRepository.findById(positionId).orElse(null);
         currentPosition.setVisibility(newVisibility);
         return positionRepository.save(currentPosition);
+    }
+
+    private List<Position> arrayToListPositions(Integer... positionId) {
+        List<Position> listOfPositions = new ArrayList<>();
+        for(int i = 0; i < positionId.length; i++){
+            listOfPositions.add(positionRepository.findById(positionId[i]).orElse(null));
+        }
+        return listOfPositions;
     }
 }
