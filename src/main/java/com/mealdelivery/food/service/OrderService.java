@@ -23,6 +23,14 @@ public class OrderService {
         this.positionRepository = positionRepository;
     }
 
+    public List<Order> getAllOrders() {
+       return orderRepository.findAll();
+    }
+
+    public Order getOrder(Integer orderId) {
+        return orderRepository.findById(orderId).orElse(null);
+    }
+
     public Order createOrder(String address, boolean needChange, double cash, Integer... positionId) {
         List<Position> listOfPositions = new ArrayList<>();
         for(int i = 0; i < positionId.length; i++){

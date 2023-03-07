@@ -7,9 +7,12 @@ import com.mealdelivery.food.structure.users.Runner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 
 @Controller
@@ -19,6 +22,18 @@ public class OrderController {
     @Autowired
     public OrderController(OrderService orderService){
         this.orderService = orderService;
+    }
+
+    @GetMapping("/orders/all")
+    public ResponseEntity<List<Order>> getAllTasks() {
+        List<Order> order = orderService.getAllOrders();
+        return ResponseEntity.ok().body(order);
+    }
+
+    @GetMapping("/orders/{orderId}")
+    public ResponseEntity<Order> getOrder(@PathVariable Integer orderId) {
+        Order order = orderService.getOrder(orderId);
+        return ResponseEntity.ok().body(order);
     }
 
     @PostMapping("/orders/add")
@@ -46,26 +61,26 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
-    @PostMapping("/orders/{orderId}/changeAddressToDeliver")
-    public ResponseEntity<Order> changeAddressToDeliver(@PathVariable Integer orderId, String newAddress) {
+    @PostMapping("/orders/{orderId}/changeAddressToDeliver/{newAddress}")
+    public ResponseEntity<Order> changeAddressToDeliver(@PathVariable Integer orderId, @RequestParam String newAddress) {
         Order order = orderService.changeAddressToDeliver(orderId, newAddress);
         return ResponseEntity.ok().body(order);
     }
 
-    @PostMapping("/orders/{orderId}/changeAddressToDeliver")
-    public ResponseEntity<Order> setCourier (@PathVariable Integer orderId, Runner courier) {
+    @PostMapping("/orders/{orderId}/changeAddressToDeliver/{courier}")
+    public ResponseEntity<Order> setCourier (@PathVariable Integer orderId, @RequestParam Runner courier) {
         Order order = orderService.setCourier(orderId, courier);
         return ResponseEntity.ok().body(order);
     }
 
-    @PostMapping("/orders/{orderId}/changeOrderStatus")
-    public ResponseEntity<Order> changeOrderStatus(@PathVariable Integer orderId, OrderStatus newStatus) {
+    @PostMapping("/orders/{orderId}/changeOrderStatus/{newStatus}")
+    public ResponseEntity<Order> changeOrderStatus(@PathVariable Integer orderId, @RequestParam OrderStatus newStatus) {
         Order order = orderService.changeOrderStatus(orderId, newStatus);
         return ResponseEntity.ok().body(order);
     }
 
-    @PostMapping("/orders/{orderId}/customerNeedChange")
-    public ResponseEntity<Order> customerNeedChange(@PathVariable Integer orderId, boolean needChange) {
+    @PostMapping("/orders/{orderId}/customerNeedChange/{needChange}")
+    public ResponseEntity<Order> customerNeedChange(@PathVariable Integer orderId, @RequestParam boolean needChange) {
         Order order = orderService.customerNeedChange(orderId, needChange);
         return ResponseEntity.ok().body(order);
     }

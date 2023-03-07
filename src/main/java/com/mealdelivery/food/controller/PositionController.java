@@ -31,8 +31,8 @@ public class PositionController {
 
     @GetMapping("/positions/{positionId}")
     public ResponseEntity<Position> getPosition(@PathVariable Integer positionId) {
-        Position task = positionService.getPosition(positionId);;
-        return ResponseEntity.ok().body(task);
+        Position position = positionService.getPosition(positionId);;
+        return ResponseEntity.ok().body(position);
     }
 
     @PostMapping("/positions/add")
@@ -49,20 +49,26 @@ public class PositionController {
     }
 
     @PostMapping("/positions/edit/{positionId}/editpositioningredients/{newIngredients}")
-    public ResponseEntity<Position> editPositionIngredients(@PathVariable Integer positionId, @PathVariable List<String> newIngredients) {
-        Position task = positionService.editPositionIngredients(positionId, newIngredients);
-        return ResponseEntity.ok().body(task);
+    public ResponseEntity<Position> editPositionIngredients(@PathVariable Integer positionId, @RequestParam List<String> newIngredients) {
+        Position position = positionService.editPositionIngredients(positionId, newIngredients);
+        return ResponseEntity.ok().body(position);
     }
 
     @PostMapping("/positions/edit/{positionId}/editvisibility/{newVisibility}")
-    public ResponseEntity<Position> editPositionVisibility(@PathVariable Integer positionId, @PathVariable Visibility newVisibility) {
-        Position task = positionService.editPositionVisibility(newVisibility, positionId);
-        return ResponseEntity.ok().body(task);
+    public ResponseEntity<Position> editPositionVisibility(@PathVariable Integer positionId, @RequestParam Visibility newVisibility) {
+        Position position = positionService.editPositionVisibility(newVisibility, positionId);
+        return ResponseEntity.ok().body(position);
     }
 
     @PostMapping("/positions/edit/{positionId}/editpositionname/{newPositionName}")
-    public ResponseEntity<Position> setPositionName(@PathVariable Integer positionId, @PathVariable String[] newPositionName) {
-        Position task = positionService.editPositionName(positionId, newPositionName);
-        return ResponseEntity.ok().body(task);
+    public ResponseEntity<Position> setPositionName(@PathVariable Integer positionId, @RequestParam String[] newPositionName) {
+        Position position = positionService.editPositionName(positionId, newPositionName);
+        return ResponseEntity.ok().body(position);
+    }
+
+    @PostMapping("/positions/{positionId}/editprice")
+    public ResponseEntity<Position> editPositionPrice(@PathVariable Integer positionId, @RequestParam double newPositionPrice) {
+        Position position = positionService.editPositionPrice(positionId, newPositionPrice);
+        return ResponseEntity.ok().body(position);
     }
 }
