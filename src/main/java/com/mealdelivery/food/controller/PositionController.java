@@ -51,21 +51,21 @@ public class PositionController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/positions/edit/{positionId}/editpositioningredients/{newIngredients}")
+    @PostMapping("/positions/edit/{positionId}/editpositioningredients")
     public ResponseEntity<Position> editPositionIngredients(@PathVariable Integer positionId,
                                                             @RequestParam List<String> newIngredients) {
         Position position = positionService.editPositionIngredients(positionId, newIngredients);
         return ResponseEntity.ok().body(position);
     }
 
-    @PostMapping("/positions/edit/{positionId}/editvisibility/{newVisibility}")
+    @PostMapping("/positions/edit/{positionId}/editvisibility")
     public ResponseEntity<Position> editPositionVisibility(@PathVariable Integer positionId,
                                                            @RequestParam Visibility newVisibility) {
         Position position = positionService.editPositionVisibility(newVisibility, positionId);
         return ResponseEntity.ok().body(position);
     }
 
-    @PostMapping("/positions/edit/{positionId}/editpositionname/{newPositionName}")
+    @PostMapping("/positions/edit/{positionId}/editpositionname")
     public ResponseEntity<Position> setPositionName(@PathVariable Integer positionId,
                                                     @RequestParam String[] newPositionName) {
         Position position = positionService.editPositionName(positionId, newPositionName);
