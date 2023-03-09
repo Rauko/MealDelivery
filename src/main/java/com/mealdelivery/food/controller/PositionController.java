@@ -24,7 +24,7 @@ public class PositionController {
     }
 
     @GetMapping("/positions/all")
-    public ResponseEntity<List<Position>> getAllTasks() {
+    public ResponseEntity<List<Position>> getAllPositions() {
         List<Position> positions = positionService.getAllPositions();
         return ResponseEntity.ok().body(positions);
     }
@@ -36,8 +36,11 @@ public class PositionController {
     }
 
     @PostMapping("/positions/add")
-    public ResponseEntity<Position> addTask(@RequestParam String[] positionName, Double positionPrice,
-                                            String[] description, short weight, List<String> ingredients) {
+    public ResponseEntity<Position> addPosition(@RequestParam String[] positionName,
+                                                @RequestParam Double positionPrice,
+                                                @RequestParam String[] description,
+                                                @RequestParam short weight,
+                                                @RequestParam List<String> ingredients) {
         Position positions = positionService.addPosition(positionName, positionPrice, description, weight, ingredients);
         return ResponseEntity.ok().body(positions);
     }
@@ -49,25 +52,29 @@ public class PositionController {
     }
 
     @PostMapping("/positions/edit/{positionId}/editpositioningredients/{newIngredients}")
-    public ResponseEntity<Position> editPositionIngredients(@PathVariable Integer positionId, @RequestParam List<String> newIngredients) {
+    public ResponseEntity<Position> editPositionIngredients(@PathVariable Integer positionId,
+                                                            @RequestParam List<String> newIngredients) {
         Position position = positionService.editPositionIngredients(positionId, newIngredients);
         return ResponseEntity.ok().body(position);
     }
 
     @PostMapping("/positions/edit/{positionId}/editvisibility/{newVisibility}")
-    public ResponseEntity<Position> editPositionVisibility(@PathVariable Integer positionId, @RequestParam Visibility newVisibility) {
+    public ResponseEntity<Position> editPositionVisibility(@PathVariable Integer positionId,
+                                                           @RequestParam Visibility newVisibility) {
         Position position = positionService.editPositionVisibility(newVisibility, positionId);
         return ResponseEntity.ok().body(position);
     }
 
     @PostMapping("/positions/edit/{positionId}/editpositionname/{newPositionName}")
-    public ResponseEntity<Position> setPositionName(@PathVariable Integer positionId, @RequestParam String[] newPositionName) {
+    public ResponseEntity<Position> setPositionName(@PathVariable Integer positionId,
+                                                    @RequestParam String[] newPositionName) {
         Position position = positionService.editPositionName(positionId, newPositionName);
         return ResponseEntity.ok().body(position);
     }
 
     @PostMapping("/positions/{positionId}/editprice")
-    public ResponseEntity<Position> editPositionPrice(@PathVariable Integer positionId, @RequestParam double newPositionPrice) {
+    public ResponseEntity<Position> editPositionPrice(@PathVariable Integer positionId,
+                                                      @RequestParam double newPositionPrice) {
         Position position = positionService.editPositionPrice(positionId, newPositionPrice);
         return ResponseEntity.ok().body(position);
     }

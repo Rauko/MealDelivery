@@ -1,6 +1,5 @@
 package com.mealdelivery.food.structure.orders;
 
-import com.mealdelivery.food.structure.providers.Position;
 import com.mealdelivery.food.structure.users.Runner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +21,7 @@ public class Order {
     Timestamp orderTossedToDelivery;
     Timestamp orderDelivered;
     String addressToDeliver;
-    List<Position> positions;
+    List<Integer> positionIds;
     Runner courier;
     double price;
     OrderStatus orderStatus;

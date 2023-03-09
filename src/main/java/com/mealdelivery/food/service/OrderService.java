@@ -33,13 +33,15 @@ public class OrderService {
 
     public Order createOrder(String address, boolean needChange, double cash, Integer... positionId) {
         List<Position> listOfPositions = new ArrayList<>();
+        List<Integer> listOfIds = new ArrayList<>();
         for(int i = 0; i < positionId.length; i++){
             listOfPositions.add(positionRepository.findById(positionId[i]).orElse(null));
+            listOfIds.add(positionId[i]);
         }
         return Order.builder()
                 .orderPlacedAt(Timestamp.valueOf(LocalDateTime.now()))
                 .addressToDeliver(address)
-                .positions(listOfPositions)
+                .positionIds(listOfIds)
                 .price(listOfPositions.stream()
                         .mapToDouble(Position::getPositionPrice)
                         .sum())
