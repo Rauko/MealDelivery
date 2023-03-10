@@ -7,8 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -16,7 +16,7 @@ import java.util.List;
 @Document(collection = "users")
 public class User {
     @Id
-    Integer id;
+    Long id;
     String name;
     String email;
     Integer phone;
@@ -24,6 +24,7 @@ public class User {
     String hashedPassword;
     UserStatus userStatus;
     List<Integer> orderIdList;
+    RunnerStatus runnerStatus;
 
     public void setHashedPassword(String password) {
         this.hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());;

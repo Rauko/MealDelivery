@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<User> getOrder(@PathVariable Integer userId) {
+    public ResponseEntity<User> getOrder(@PathVariable Long userId) {
         User users = userService.getUser(userId);
         return ResponseEntity.ok().body(users);
     }
@@ -46,48 +46,48 @@ public class UserController {
     }
 
     @DeleteMapping("/users/delete/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Integer userId) {
+    public ResponseEntity<Object> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/editname")
-    public ResponseEntity<List<User>> setName(@PathVariable Integer userId,
+    public ResponseEntity<List<User>> setName(@PathVariable Long userId,
                                               @RequestParam String newName) {
         userService.setName(userId, newName);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/editemail")
-    public ResponseEntity<List<User>> setEmail(@PathVariable Integer userId,
+    public ResponseEntity<List<User>> setEmail(@PathVariable Long userId,
                                                @RequestParam String newEmail) {
         userService.setEmail(userId, newEmail);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/editstatus")
-    public ResponseEntity<List<User>> setUserStatus(@PathVariable Integer userId,
+    public ResponseEntity<List<User>> setUserStatus(@PathVariable Long userId,
                                                     @RequestParam UserStatus newUserStatus) {
         userService.setUserStatus(userId, newUserStatus);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/editphone")
-    public ResponseEntity<List<User>> setPhone(@PathVariable Integer userId,
+    public ResponseEntity<List<User>> setPhone(@PathVariable Long userId,
                                                @RequestParam Integer newPhone) {
         userService.setPhone(userId, newPhone);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/editpassword")
-    public ResponseEntity<List<User>> setHashedPassword(@PathVariable Integer userId,
+    public ResponseEntity<List<User>> setHashedPassword(@PathVariable Long userId,
                                                         @RequestParam String newPassword) {
         userService.setHashedPassword(userId, newPassword);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/editaddress")
-    public ResponseEntity<List<User>> setAddress(@PathVariable Integer userId,
+    public ResponseEntity<List<User>> setAddress(@PathVariable Long userId,
                                                  @RequestParam String newAddress) {
         userService.setAddress(userId, newAddress);
         return ResponseEntity.ok().build();

@@ -1,7 +1,6 @@
 package com.mealdelivery.food.dto;
 
 import com.mealdelivery.food.structure.orders.OrderStatus;
-import com.mealdelivery.food.structure.users.Runner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ public class OrderDTO {
     private String addressToDeliver;
     private List<Integer> positionsIds;
     private LocalDateTime creationDate;
-    private Runner courier;
+   // private Runner courier;
     private OrderStatus orderStatus;
     private double orderPrice;
     private boolean customerNeedChange;

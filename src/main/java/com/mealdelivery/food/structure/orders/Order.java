@@ -1,6 +1,5 @@
 package com.mealdelivery.food.structure.orders;
 
-import com.mealdelivery.food.structure.users.Runner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +15,13 @@ import java.util.List;
 @Document(collection = "orders")
 public class Order {
     @Id
-    Integer orderId;
+    Long orderId;
     Timestamp orderPlacedAt;
     Timestamp orderTossedToDelivery;
     Timestamp orderDelivered;
     String addressToDeliver;
     List<Integer> positionIds;
-    Runner courier;
+    Long courier;
     double price;
     OrderStatus orderStatus;
     boolean customerNeedChange;

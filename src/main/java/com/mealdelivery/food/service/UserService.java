@@ -1,6 +1,7 @@
 package com.mealdelivery.food.service;
 
 import com.mealdelivery.food.persistance.UserRepository;
+import com.mealdelivery.food.structure.users.RunnerStatus;
 import com.mealdelivery.food.structure.users.User;
 import com.mealdelivery.food.structure.users.UserStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -22,7 +23,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUser(Integer userId) {
+    public User getUser(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
@@ -36,49 +37,50 @@ public class UserService {
                 .userStatus(UserStatus.NEWLY_CREATED)
                 .address(initialAddress)
                 .hashedPassword(BCrypt.hashpw(password, BCrypt.gensalt()))
+                .runnerStatus(RunnerStatus.NOT_RUNNER)
                 .build();
     }
 
-    public void deleteUser(Integer userId) {
+    public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    public User setName(Integer orderId, String newName) {
+    public User setName(Long orderId, String newName) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setName(newName);
         return userRepository.save(currentUser);
     }
 
-    public User setEmail(Integer orderId, String newEmail) {
+    public User setEmail(Long orderId, String newEmail) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setEmail(newEmail);
         return userRepository.save(currentUser);
     }
 
-    public User setUserStatus(Integer orderId, UserStatus newUserStatus) {
+    public User setUserStatus(Long orderId, UserStatus newUserStatus) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setUserStatus(newUserStatus);
         return userRepository.save(currentUser);
     }
 
-    public User setPhone(Integer orderId, Integer newPhone) {
+    public User setPhone(Long orderId, Integer newPhone) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setPhone(newPhone);
         return userRepository.save(currentUser);
     }
 
-    public User setHashedPassword(Integer orderId, String newPassword) {
+    public User setHashedPassword(Long orderId, String newPassword) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setHashedPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
         return userRepository.save(currentUser);
     }
 
-    public User setAddress(Integer orderId, String newAddress) {
+    public User setAddress(Long orderId, String newAddress) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         Map<Integer, String> currentAddress = new HashMap<Integer, String>();
         assert currentUser != null;

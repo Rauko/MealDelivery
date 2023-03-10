@@ -3,7 +3,6 @@ package com.mealdelivery.food.controller;
 import com.mealdelivery.food.service.OrderService;
 import com.mealdelivery.food.structure.orders.Order;
 import com.mealdelivery.food.structure.orders.OrderStatus;
-import com.mealdelivery.food.structure.users.Runner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -68,8 +67,9 @@ public class OrderController {
     }
 
     @PostMapping("/orders/{orderId}/changeAddressToDeliver/{courier}")
-    public ResponseEntity<Order> setCourier (@PathVariable Integer orderId, @RequestParam Runner courier) {
-        Order order = orderService.setCourier(orderId, courier);
+    public ResponseEntity<Order> setCourier (@PathVariable Integer orderId) {
+        //random available courier will be setted for this order
+        Order order = orderService.setCourier(orderId);
         return ResponseEntity.ok().body(order);
     }
 
