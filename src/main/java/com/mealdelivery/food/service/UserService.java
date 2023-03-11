@@ -1,7 +1,7 @@
 package com.mealdelivery.food.service;
 
 import com.mealdelivery.food.persistance.UserRepository;
-import com.mealdelivery.food.structure.users.RunnerStatus;
+import com.mealdelivery.food.structure.users.EmployeeState;
 import com.mealdelivery.food.structure.users.User;
 import com.mealdelivery.food.structure.users.UserStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -37,7 +37,7 @@ public class UserService {
                 .userStatus(UserStatus.NEWLY_CREATED)
                 .address(initialAddress)
                 .hashedPassword(BCrypt.hashpw(password, BCrypt.gensalt()))
-                .runnerStatus(RunnerStatus.NOT_RUNNER)
+                .employeeState(EmployeeState.NOT_EMPLOYEE)
                 .build();
     }
 

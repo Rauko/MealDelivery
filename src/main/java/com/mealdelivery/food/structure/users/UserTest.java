@@ -17,18 +17,18 @@ public class UserTest {
     public void setUp() {
         Map<Integer, String> sampleAddress = new HashMap<Integer,String>();
         List<Integer> orderIdList = new ArrayList<>();
-        sampleAddress.putIfAbsent(1,"YammyTown");
+        sampleAddress.putIfAbsent(1,"Yammy Town");
         Long id = 1L;
-        user = new User(id, "Fatso", "fatso@example.com", 1234567890,
+        user = new User(id, "Degustier Fatso", "fatso@example.com", 1234567890,
                 sampleAddress,"BestPasswordEver",
                 UserStatus.NEWLY_CREATED,
                 orderIdList,
-                RunnerStatus.NOT_RUNNER);
+                EmployeeState.NOT_EMPLOYEE);
     }
 
     @Test
     public void testGetName() {
-        assertEquals("Fatso", user.getName());
+        assertEquals("Degustier Fatso", user.getName());
     }
 
     @Test
@@ -43,12 +43,12 @@ public class UserTest {
 
     @Test
     public void testGetAddress() {
-        assertEquals("YammyTown", user.getAddress().get(1));
+        assertEquals("Yammy Town", user.getAddress().get(1));
     }
 
     @Test
     public void testGetHashedPassword() {
-        //checking that it  is actually saved for now... no hashing
+        //checking that it is actually saved for now... no hashing
         String hashedPassword = "BestPasswordEver";
         assertEquals(hashedPassword, user.getHashedPassword());
     }

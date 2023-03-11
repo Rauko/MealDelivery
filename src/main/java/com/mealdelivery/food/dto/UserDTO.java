@@ -1,7 +1,7 @@
 package com.mealdelivery.food.dto;
 
 import com.mealdelivery.food.structure.delivery.Address;
-import com.mealdelivery.food.structure.users.RunnerStatus;
+import com.mealdelivery.food.structure.users.EmployeeState;
 import com.mealdelivery.food.structure.users.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,5 +21,5 @@ public class UserDTO {
     private List<Address> address;
     private String hashedPassword;
     private UserStatus userStatus;
-    private RunnerStatus runnerStatus;
+    private EmployeeState runnerStatus;
 }
