@@ -12,23 +12,40 @@ import static org.junit.Assert.assertEquals;
 
 public class UserTest {
     private User user;
+    private String hashedPassword;
+    private Map<Integer, String> sampleAddress = new HashMap<Integer,String>();
+    private List<Integer> orderIdList = new ArrayList<>();
 
     @Before
     public void setUp() {
-        Map<Integer, String> sampleAddress = new HashMap<Integer,String>();
-        List<Integer> orderIdList = new ArrayList<>();
         sampleAddress.putIfAbsent(1,"Yammy Town");
         Long id = 1L;
-        user = new User(id, "Degustier Fatso", "fatso@example.com", 1234567890,
-                sampleAddress,"BestPasswordEver",
-                UserStatus.NEWLY_CREATED,
-                orderIdList,
-                EmployeeState.NOT_EMPLOYEE);
+        user = new User(id, "Degustier Fatso",
+                            "fatso@example.com",
+                            1234567890,
+                                  sampleAddress,
+                     null,
+                                  UserStatus.NEWLY_CREATED,
+                                  orderIdList,
+                                  EmployeeState.NOT_EMPLOYEE);
+        user.setHashedPassword("BestPasswordEver");
+        hashedPassword = user.getHashedPassword();
     }
 
     @Test
+    public void testGetId() {
+        Long expectedId = 1L;
+        assertEquals(expectedId, user.getId());
+    }
+    @Test
     public void testGetName() {
         assertEquals("Degustier Fatso", user.getName());
+    }
+
+    @Test
+    public void testOrderList() {
+        List<Integer> expectedOrderIdList = new ArrayList<>();
+        assertEquals(expectedOrderIdList, user.getOrderIdList());
     }
 
     @Test
@@ -49,7 +66,16 @@ public class UserTest {
     @Test
     public void testGetHashedPassword() {
         //checking that it is actually saved for now... no hashing
-        String hashedPassword = "BestPasswordEver";
         assertEquals(hashedPassword, user.getHashedPassword());
+    }
+
+    @Test
+    public void testGetEmployeeState() {
+        assertEquals(EmployeeState.NOT_EMPLOYEE, user.getEmployeeState());
+    }
+
+    @Test
+    public void testUserStatus() {
+        assertEquals(UserStatus.NEWLY_CREATED, user.getUserStatus());
     }
 }
