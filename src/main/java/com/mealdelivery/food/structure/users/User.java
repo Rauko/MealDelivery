@@ -26,6 +26,10 @@ public class User {
     List<Integer> orderIdList;
     EmployeeState employeeState;
 
+    public User() {
+
+    }
+
     public void setHashedPassword(String password) {
         this.hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     }
