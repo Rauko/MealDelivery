@@ -19,7 +19,7 @@ public class User {
     Long id;
     String name;
     String email;
-    Integer phone;
+    Long phone;
     Map<Integer, String> address;
     String hashedPassword;
     UserStatus userStatus;

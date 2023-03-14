@@ -27,7 +27,42 @@ public class UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User createUser(String name, String email, Integer phone, String address, String password) {
+    public String getName(Long userId) {
+        User localUser = userRepository.findById(userId).orElse(null);
+        return localUser.getName();
+    }
+
+    public String getEmail(Long userId) {
+        User localUser = userRepository.findById(userId).orElse(null);
+        return localUser.getEmail();
+    }
+
+    public Long getPhone(Long userId) {
+        User localUser = userRepository.findById(userId).orElse(null);
+        return localUser.getPhone();
+    }
+
+    public UserStatus getUserStatus(Long userId) {
+        User localUser = userRepository.findById(userId).orElse(null);
+        return localUser.getUserStatus();
+    }
+
+    public Map<Integer,String> getAddress(Long userId) {
+        User localUser = userRepository.findById(userId).orElse(null);
+        return localUser.getAddress();
+    }
+
+    public String getHashedPassword(Long userId) {
+        User localUser = userRepository.findById(userId).orElse(null);
+        return localUser.getHashedPassword();
+    }
+
+    public EmployeeState getEmployeeState(Long userId) {
+        User localUser = userRepository.findById(userId).orElse(null);
+        return localUser.getEmployeeState();
+    }
+
+    public User createUser(String name, String email, Long phone, String address, String password) {
         Map<Integer, String> initialAddress = new HashMap<Integer, String>();
         initialAddress.putIfAbsent(0, address);
         return User.builder()
@@ -66,7 +101,7 @@ public class UserService {
         return userRepository.save(currentUser);
     }
 
-    public User setPhone(Long orderId, Integer newPhone) {
+    public User setPhone(Long orderId, Long newPhone) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setPhone(newPhone);

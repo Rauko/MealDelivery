@@ -22,7 +22,7 @@ public class UserTest {
         Long id = 1L;
         user = new User(id, "Degustier Fatso",
                             "fatso@example.com",
-                            1234567890,
+                            1234567890L,
                                   sampleAddress,
                      null,
                                   UserStatus.NEWLY_CREATED,
