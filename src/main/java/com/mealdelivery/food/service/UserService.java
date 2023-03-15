@@ -80,47 +80,47 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public User setName(Long orderId, String newName) {
+    public void setName(Long orderId, String newName) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setName(newName);
-        return userRepository.save(currentUser);
+        userRepository.save(currentUser);
     }
 
-    public User setEmail(Long orderId, String newEmail) {
+    public void setEmail(Long orderId, String newEmail) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setEmail(newEmail);
-        return userRepository.save(currentUser);
+        userRepository.save(currentUser);
     }
 
-    public User setUserStatus(Long orderId, UserStatus newUserStatus) {
+    public void setUserStatus(Long orderId, UserStatus newUserStatus) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setUserStatus(newUserStatus);
-        return userRepository.save(currentUser);
+        userRepository.save(currentUser);
     }
 
-    public User setPhone(Long orderId, Long newPhone) {
+    public void setPhone(Long orderId, Long newPhone) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setPhone(newPhone);
-        return userRepository.save(currentUser);
+        userRepository.save(currentUser);
     }
 
-    public User setHashedPassword(Long orderId, String newPassword) {
+    public void setHashedPassword(Long orderId, String newPassword) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         assert currentUser != null;
         currentUser.setHashedPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
-        return userRepository.save(currentUser);
+        userRepository.save(currentUser);
     }
 
-    public User setAddress(Long orderId, String newAddress) {
+    public void setAddress(Long orderId, String newAddress) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         Map<Integer, String> currentAddress = new HashMap<Integer, String>();
         assert currentUser != null;
         currentAddress.putIfAbsent(currentUser.getAddress().size() + 1, newAddress);
         currentUser.setAddress(currentAddress);
-        return userRepository.save(currentUser);
+        userRepository.save(currentUser);
     }
 }
