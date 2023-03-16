@@ -21,7 +21,7 @@ public class Order {
     Timestamp orderDelivered;
     String addressToDeliver;
     List<Integer> positionIds;
-    Long courier;
+    String courier;
     double price;
     OrderStatus orderStatus;
     boolean customerNeedChange;

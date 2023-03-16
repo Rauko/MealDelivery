@@ -22,7 +22,7 @@ public class OrderTest {
         Long id = 1L;
         positions.add(14);
         positions.add(42);
-        Long courierId = 1341L;
+        String courierId = "1341L";
         order = new Order(id, testTimestamp, null, null, "Hometown 15",
                           positions, courierId, 3456D, OrderStatus.CREATED, true, 5000);
     }

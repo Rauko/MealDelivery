@@ -133,7 +133,7 @@ public class OrderService {
         return orderRepository.save(currentOrder);
     }
 
-    public Order setDirectCourier(Long orderId, Long courierId) {
+    public Order setDirectCourier(Long orderId, String courierId) {
         Order currentOrder = orderRepository.findById(orderId).orElse(null);
         assert currentOrder != null;
         currentOrder.setCourier(courierId);

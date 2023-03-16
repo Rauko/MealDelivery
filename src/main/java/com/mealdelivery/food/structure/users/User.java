@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ import java.util.Map;
 @Document(collection = "users")
 public class User {
     @Id
-    Long id;
+    String id;
     String name;
     String email;
     Long phone;
@@ -31,6 +30,6 @@ public class User {
     }
 
     public void setHashedPassword(String password) {
-        this.hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+     //   this.hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

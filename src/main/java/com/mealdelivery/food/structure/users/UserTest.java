@@ -19,7 +19,7 @@ public class UserTest {
     @Before
     public void setUp() {
         sampleAddress.putIfAbsent(1,"Yammy Town");
-        Long id = 1L;
+        String id = "1";
         user = new User(id, "Degustier Fatso",
                             "fatso@example.com",
                             1234567890L,

@@ -83,7 +83,7 @@ public class OrderController {
 
     @PostMapping("/orders/{orderId}/setDirectCourier")
     public ResponseEntity<Order> setDirectCourier (@PathVariable Long orderId,
-                                                   @RequestParam Long courierId) {
+                                                   @RequestParam String courierId) {
         Order order = orderService.setDirectCourier(orderId,courierId);
         return ResponseEntity.ok().body(order);
     }
