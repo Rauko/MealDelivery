@@ -134,40 +134,4 @@ public class UserControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(userService, times(1)).deleteUser("1");
     }
-/*
-    @Test
-    public void testSetName() {
-        User user = new User();
-        Long userId = 1L;
-        user.setId(userId);
-        user.setName("Degustier Fatso");
-
-        when(userService.setName(anyLong(), anyString())).thenReturn(user);
-
-        ResponseEntity<User> response = controller.setName(userId,"New Name");
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        User updatedUser = response.getBody();
-
-        assertNotNull(updatedUser);
-        assertEquals("New Name", updatedUser.getName());
-    }
-
-    @Test
-    public void testSetEmail() {
-        User user = new User();
-        Long userId = 1L;
-        user.setId(userId);
-        user.setEmail("fatso@example.com");
-
-        when(userService.setEmail(anyLong(), anyString())).thenReturn(user);
-
-        ResponseEntity<User> response = controller.setName(userId,"fatso-nutso@example.com");
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        User updatedUser = response.getBody();
-
-        assertNotNull(updatedUser);
-        assertEquals("fatso-nutso@example.com", updatedUser.getEmail());
-    }*/
 }
