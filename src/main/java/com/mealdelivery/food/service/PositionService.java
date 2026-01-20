@@ -22,7 +22,7 @@ public class PositionService {
         positionRepository.deleteById(positionId);
     }
 
-    private Position constructPosition (String[] positionName, Double positionPrice, String[] description, short weight, List<String> ingredients) {
+    private Position constructPosition (String positionName, Double positionPrice, String description, short weight, List<String> ingredients) {
         return Position.builder()
                 .positionName(positionName)
                 .positionPrice(positionPrice)
@@ -33,7 +33,7 @@ public class PositionService {
                 .build();
     }
 
-    public Position addPosition(String[] positionName, Double positionPrice, String[] description, short weight, List<String> ingredients) {
+    public Position addPosition(String positionName, Double positionPrice, String description, short weight, List<String> ingredients) {
         return positionRepository.insert(constructPosition(positionName,positionPrice, description,weight,ingredients));
     }
 
@@ -49,7 +49,7 @@ public class PositionService {
         return positionRepository.save(currentPosition);
     }
 
-    public Position editPositionName(Integer positionId, String[] newName) {
+    public Position editPositionName(Integer positionId, String newName) {
         Position currentPosition = positionRepository.findById(positionId).orElse(null);
         currentPosition.setPositionName(newName);
         return positionRepository.save(currentPosition);
@@ -66,7 +66,7 @@ public class PositionService {
     public Position makeMealSet(Integer... positionId) {
         List<Position> setOfPositions = arrayToListPositions(positionId);
         return Position.builder()
-                .positionName(new String[]{"New Position!"})
+                .positionName(new String("New Position!"))
                 .positionPrice(setOfPositions.stream()
                         .mapToDouble(Position::getPositionPrice)
                         .sum()*0.9)
@@ -82,12 +82,12 @@ public class PositionService {
                 .build();
     }
 
-    private String[] descriptionCompilation(String... descriptions) {
-        List<String[]> description = new ArrayList<>();
+    private String descriptionCompilation(String... descriptions) {
+        String description = new String();
         for(int i = 0; i < descriptions.length; i++){
-            description.add(descriptions);
+            description = description + descriptions[i] + ". ";
         }
-        return (String[]) description.toArray();
+        return description;
     }
 
     @SafeVarargs
@@ -99,7 +99,7 @@ public class PositionService {
         return new ArrayList<>(uniqueIngredients);
     }
 
-    public Position editPositionVisibility(Visibility newVisibility, Integer positionId) {
+    public Position editPositionVisibility(Integer positionId, Visibility newVisibility) {
         Position currentPosition = positionRepository.findById(positionId).orElse(null);
         currentPosition.setVisibility(newVisibility);
         return positionRepository.save(currentPosition);
@@ -111,5 +111,13 @@ public class PositionService {
             listOfPositions.add(positionRepository.findById(positionId[i]).orElse(null));
         }
         return listOfPositions;
+    }
+
+    public void editPositionDescription(Integer positionId, String description) {
+        positionRepository.findById(positionId).orElse(null).setPositionDescription(description);
+    }
+
+    public void editpositionWeight(Integer positionId, short weight) {
+        positionRepository.findById(positionId).orElse(null).setWeight(weight);
     }
 }

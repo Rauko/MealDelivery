@@ -22,41 +22,41 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUser(String userId) {
+    public User getUser(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public String getName(String userId) {
+    public String getName(Long userId) {
         User localUser = userRepository.findById(userId).orElse(null);
         return localUser.getName();
     }
 
-    public String getEmail(String userId) {
+    public String getEmail(Long userId) {
         User localUser = userRepository.findById(userId).orElse(null);
         return localUser.getEmail();
     }
 
-    public Long getPhone(String userId) {
+    public Long getPhone(Long userId) {
         User localUser = userRepository.findById(userId).orElse(null);
         return localUser.getPhone();
     }
 
-    public UserStatus getUserStatus(String userId) {
+    public UserStatus getUserStatus(Long userId) {
         User localUser = userRepository.findById(userId).orElse(null);
         return localUser.getUserStatus();
     }
 
-    public Map<Integer, String> getAddress(String userId) {
+    public Map<Integer, String> getAddress(Long userId) {
         User localUser = userRepository.findById(userId).orElse(null);
         return localUser.getAddress();
     }
 
-    public String getHashedPassword(String userId) {
+    public String getHashedPassword(Long userId) {
         User localUser = userRepository.findById(userId).orElse(null);
         return localUser.getHashedPassword();
     }
 
-    public EmployeeState getEmployeeState(String userId) {
+    public EmployeeState getEmployeeState(Long userId) {
         User localUser = userRepository.findById(userId).orElse(null);
         return localUser.getEmployeeState();
     }
@@ -78,41 +78,41 @@ public class UserService {
                 .build();
     }
 
-    public void deleteUser(String userId) {
+    public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    public User setName(String userId, String newName) {
+    public User setName(Long userId, String newName) {
         User currentUser = userRepository.findById(userId).orElse(null);
         currentUser.setName(newName);
         return userRepository.save(currentUser);
     }
 
-    public User setEmail(String orderId, String newEmail) {
+    public User setEmail(Long orderId, String newEmail) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         currentUser.setEmail(newEmail);
         return userRepository.save(currentUser);
     }
 
-    public User setUserStatus(String orderId, UserStatus newUserStatus) {
+    public User setUserStatus(Long orderId, UserStatus newUserStatus) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         currentUser.setUserStatus(newUserStatus);
         return userRepository.save(currentUser);
     }
 
-    public User setPhone(String orderId, Long newPhone) {
+    public User setPhone(Long orderId, Long newPhone) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         currentUser.setPhone(newPhone);
         return userRepository.save(currentUser);
     }
 
-    public User setHashedPassword(String orderId, String newPassword) {
+    public User setHashedPassword(Long orderId, String newPassword) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         currentUser.setHashedPassword(/*BCrypt.hashpw(newPassword, BCrypt.gensalt())*/newPassword);
         return userRepository.save(currentUser);
     }
 
-    public User setAddress(String orderId, String newAddress) {
+    public User setAddress(Long orderId, String newAddress) {
         User currentUser = userRepository.findById(orderId).orElse(null);
         Map<Integer, String> currentAddress = new HashMap<Integer, String>();
         currentAddress.putIfAbsent(currentUser.getAddress().size() + 1, newAddress);

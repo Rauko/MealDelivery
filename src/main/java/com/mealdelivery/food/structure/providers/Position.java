@@ -16,10 +16,10 @@ public class Position {
 
     @Id
     Integer positionId;
-    String[] positionName;
+    String positionName;
     Double positionPrice;
     short weight; //works up to 32700gram/32.7kg
     List<String> ingredients;
-    String[] positionDescription;
+    String positionDescription;
     Visibility visibility;
 }

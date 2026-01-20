@@ -14,8 +14,10 @@ import java.util.Map;
 @AllArgsConstructor
 @Document(collection = "users")
 public class User {
+
     @Id
-    String id;
+    Long id;
+
     String name;
     String email;
     Long phone;

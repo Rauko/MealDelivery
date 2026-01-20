@@ -3,120 +3,99 @@ package com.mealdelivery.food.controller;
 import com.mealdelivery.food.service.OrderService;
 import com.mealdelivery.food.structure.orders.Order;
 import com.mealdelivery.food.structure.orders.OrderStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @Controller
 public class OrderController {
+
     private OrderService orderService;
 
-    @Autowired
-    public OrderController(OrderService orderService){
-        this.orderService = orderService;
+    @GetMapping("/all")
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @GetMapping("/orders/all")
-    public ResponseEntity<List<Order>> getAllTasks() {
-        List<Order> order = orderService.getAllOrders();
-        return ResponseEntity.ok().body(order);
-    }
-
-    @GetMapping("/orders/{orderId}")
+    @GetMapping("/{orderId}")
     public ResponseEntity<Order> getOrder(@PathVariable Long orderId) {
-        Order order = orderService.getOrder(orderId);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok(orderService.getOrder(orderId));
     }
 
-    @PostMapping("/orders/set")
-    public ResponseEntity<Order> setOrder(@RequestParam String address, boolean needChange,
-                                             double cash, Integer... positionId) {
-        Order order = orderService.setOrder(address, needChange, cash, positionId);
-        return ResponseEntity.ok().body(order);
+    @PostMapping("/create")
+    public ResponseEntity<Order> createOrder(@Valid @RequestBody CreateOrderRequest request) {
+        Order order = orderService.setOrder(
+                request.getAddress(),
+                request.isPayByCard(),
+                request.isNeedChange(),
+                request.getCash(),
+                request.getPositionId());
+        return ResponseEntity.ok(order);
     }
 
-    @PostMapping("/orders/add/{orderId}")
-    public ResponseEntity<Order> createOrder(@PathVariable Long orderId) {
-        Order order = orderService.createOrder(orderId,OrderStatus.CREATED);
-        return ResponseEntity.ok().body(order);
-    }
-
-    @PostMapping("/orders/delete/{orderId}")
-    public ResponseEntity<Order> deleteOrder(@PathVariable Long orderId) {
+    @DeleteMapping ("/{orderId}/delete")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
         orderService.deleteOrder(orderId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/orders/{orderId}/OrderTossedToDelivery")
+    @PatchMapping("/{orderId}/delivery/tossed")
     public ResponseEntity<Order> setOrderTossedToDeliveryTimestamp(@PathVariable Long orderId) {
-        Order order = orderService.setOrderTossedToDeliveryTimestamp(orderId);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok(orderService.setOrderTossedToDeliveryTimestamp(orderId));
     }
 
-    @PostMapping("/orders/{orderId}/OrderDelivered")
+    @PostMapping("/{orderId}/delivered")
     public ResponseEntity<Order> setOrderDeliveredTimestamp(@PathVariable Long orderId) {
-        Order order = orderService.setOrderDeliveredTimestamp(orderId);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok(orderService.setOrderDeliveredTimestamp(orderId));
     }
 
-    @PostMapping("/orders/{orderId}/changeAddressToDeliver")
+    @PostMapping("/{orderId}/change-address")
     public ResponseEntity<Order> changeAddressToDeliver(@PathVariable Long orderId,
                                                         @RequestParam String newAddress) {
-        Order order = orderService.changeAddressToDeliver(orderId, newAddress);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok(orderService.changeAddressToDeliver(orderId, newAddress));
     }
 
-    @PostMapping("/orders/{orderId}/setRandomCourier")
+    @PostMapping("/{orderId}/courier/random")
     public ResponseEntity<Order> setRandomCourier (@PathVariable Long orderId) {
         //random available courier will be setted for this order
-        Order order = orderService.setCourier(orderId);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok(orderService.setCourier(orderId));
     }
 
-    @PostMapping("/orders/{orderId}/setDirectCourier")
+    @PostMapping("/{orderId}/courier/direct")
     public ResponseEntity<Order> setDirectCourier (@PathVariable Long orderId,
                                                    @RequestParam String courierId) {
-        Order order = orderService.setDirectCourier(orderId,courierId);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok(orderService.setDirectCourier(orderId,courierId));
     }
 
-    @PostMapping("/orders/{orderId}/changeOrderStatus")
+    @PostMapping("/{orderId}/change-status")
     public ResponseEntity<Order> changeOrderStatus(@PathVariable Long orderId,
                                                    @RequestParam OrderStatus newStatus) {
-        Order order = orderService.changeOrderStatus(orderId, newStatus);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok(orderService.changeOrderStatus(orderId, newStatus));
     }
 
-    @PostMapping("/orders/{orderId}/customerNeedChange")
+    @PostMapping("/{orderId}/change")
     public ResponseEntity<Order> customerNeedChange(@PathVariable Long orderId,
                                                     @RequestParam boolean needChange) {
-        Order order = orderService.customerNeedChange(orderId, needChange);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok().body(orderService.customerNeedChange(orderId, needChange));
     }
 
-    @PostMapping("/orders/{orderId}/acceptOrder")
+    @PostMapping("/{orderId}/accept")
     public ResponseEntity<Order> acceptOrder(@PathVariable Long orderId) {
-        Order order = orderService.acceptOrder(orderId);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok().body(orderService.acceptOrder(orderId));
     }
 
-    @PostMapping("/orders/{orderId}/cancelOrder")
+    @PostMapping("/{orderId}/cancel")
     public ResponseEntity<Order> cancelOrder(@PathVariable Long orderId) {
-        Order order = orderService.cancelOrder(orderId);
-        return ResponseEntity.ok().body(order);
+        return ResponseEntity.ok().body(orderService.cancelOrder(orderId));
     }
 
-    @DeleteMapping("/orders/delete/allcancelledorders")
+    @DeleteMapping("/delete/all-cancelled-orders")
     public ResponseEntity<Order> deleteAllCancelledOrders() {
         orderService.deleteAllCancelledOrders();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

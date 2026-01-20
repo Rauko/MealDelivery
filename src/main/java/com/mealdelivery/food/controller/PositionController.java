@@ -3,79 +3,74 @@ package com.mealdelivery.food.controller;
 import com.mealdelivery.food.service.PositionService;
 import com.mealdelivery.food.structure.providers.Position;
 import com.mealdelivery.food.structure.providers.Visibility;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/positions")
+@RequiredArgsConstructor
 public class PositionController {
+
     private PositionService positionService;
 
-    @Autowired
-    public PositionController(PositionService positionService) {
-        this.positionService = positionService;
+    @GetMapping
+    public ResponseEntity<List<Position>> getPositions() {
+        return ResponseEntity.ok(positionService.getAllPositions());
     }
 
-    @GetMapping("/positions/all")
-    public ResponseEntity<List<Position>> getAllPositions() {
-        List<Position> positions = positionService.getAllPositions();
-        return ResponseEntity.ok().body(positions);
-    }
-
-    @GetMapping("/positions/{positionId}")
+    @GetMapping("/{positionId}")
     public ResponseEntity<Position> getPosition(@PathVariable Integer positionId) {
-        Position position = positionService.getPosition(positionId);;
-        return ResponseEntity.ok().body(position);
+        return ResponseEntity.ok(positionService.getPosition(positionId));
     }
 
-    @PostMapping("/positions/add")
-    public ResponseEntity<Position> addPosition(@RequestParam String[] positionName,
-                                                @RequestParam Double positionPrice,
-                                                @RequestParam String[] description,
-                                                @RequestParam short weight,
-                                                @RequestParam List<String> ingredients) {
-        Position positions = positionService.addPosition(positionName, positionPrice, description, weight, ingredients);
-        return ResponseEntity.ok().body(positions);
+    @PostMapping("/add")
+    public ResponseEntity<Position> addPosition(@RequestBody CreatePositionRequest request) {
+        Position position = positionService.addPosition(
+                request.getName(),
+                request.getPrice(),
+                request.getDescription(),
+                request.getWeight(),
+                request.getIngredients());
+        return ResponseEntity.ok(position);
     }
 
-    @DeleteMapping("/positions/delete/{positionId}")
+    @PostMapping("/{positionId}/update")
+    public ResponseEntity<Position> updatePosition(@PathVariable Integer positionId,
+                                                   @RequestBody UpdatePositionRequest request) {
+        if(request.getName() != null) {
+            positionService.editPositionName(positionId, request.getName());
+        }
+        if(request.getPrice() != null) {
+            positionService.editPositionPrice(positionId, request.getPrice());
+        }
+        if(request.getDescription() != null) {
+            positionService.editPositionDescription(positionId, request.getDescription());
+        }
+        if(request.getWeight() != null){
+            positionService.editpositionWeight(positionId, request.getWeight());
+        }
+        if(request.getIngredients() != null){
+            positionService.editPositionIngredients(positionId, request.getIngredients());
+        }
+        if(request.getVisibility() != null){
+            positionService.editPositionVisibility(positionId, request.getVisibility());
+        }
+
+        return ResponseEntity.ok(positionService.getPosition(positionId));
+    }
+
+    @DeleteMapping("/{positionId}/delete")
     public ResponseEntity<Object> deletePosition (@PathVariable Integer positionId) {
         positionService.deletePosition(positionId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/positions/edit/{positionId}/editpositioningredients")
-    public ResponseEntity<Position> editPositionIngredients(@PathVariable Integer positionId,
-                                                            @RequestParam List<String> newIngredients) {
-        Position position = positionService.editPositionIngredients(positionId, newIngredients);
-        return ResponseEntity.ok().body(position);
-    }
-
-    @PostMapping("/positions/edit/{positionId}/editvisibility")
+    @PostMapping("/{positionId}/edit/visibility")
     public ResponseEntity<Position> editPositionVisibility(@PathVariable Integer positionId,
                                                            @RequestParam Visibility newVisibility) {
-        Position position = positionService.editPositionVisibility(newVisibility, positionId);
-        return ResponseEntity.ok().body(position);
-    }
-
-    @PostMapping("/positions/edit/{positionId}/editpositionname")
-    public ResponseEntity<Position> setPositionName(@PathVariable Integer positionId,
-                                                    @RequestParam String[] newPositionName) {
-        Position position = positionService.editPositionName(positionId, newPositionName);
-        return ResponseEntity.ok().body(position);
-    }
-
-    @PostMapping("/positions/{positionId}/editprice")
-    public ResponseEntity<Position> editPositionPrice(@PathVariable Integer positionId,
-                                                      @RequestParam double newPositionPrice) {
-        Position position = positionService.editPositionPrice(positionId, newPositionPrice);
-        return ResponseEntity.ok().body(position);
+        return ResponseEntity.ok(positionService.editPositionVisibility(positionId, newVisibility));
     }
 }

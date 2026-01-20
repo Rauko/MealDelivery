@@ -38,7 +38,7 @@ public class UserControllerTest {
         User user = new User();
         Map<Integer, String> sampleAddress = new HashMap<Integer,String>();
         sampleAddress.putIfAbsent(1,"Yammy Town");
-        user.setId("1");
+        user.setId(1L);
         user.setName("Degustier Fatso");
         user.setEmail("fatso@example.com");
         Long phoneNumberInLong = 1234567890L;
@@ -48,8 +48,13 @@ public class UserControllerTest {
 
         when(userService.createUser(anyString(), anyString(), anyLong(), anyString(), anyString())).thenReturn(user);
 
-        User createdUser = controller.createUser("Degustier Fatso", "fatso@example.com", phoneNumberInLong,
-                "Yammy Town", "BestPasswordEver").getBody();
+        CreateUserRequest request = new CreateUserRequest();
+        request.setName("Degustier Fatso");
+        request.setEmail("fatso@example.com");
+        request.setPhone(1234567890L);
+        request.setAddress("Yammy Town");
+        request.setPassword("BestPasswordEver");
+        User createdUser = controller.createUser(request).getBody();
 
         assert createdUser != null;
         String password = createdUser.getHashedPassword();
@@ -65,10 +70,10 @@ public class UserControllerTest {
     @Test
     public void testGetAllUsers() {
         User user1 = new User();
-        user1.setId("1");
+        user1.setId(1L);
 
         User user2 = new User();
-        user2.setId("2");
+        user2.setId(2L);
 
         List<User> expectedUsers = Arrays.asList(user1, user2);
 
@@ -89,7 +94,7 @@ public class UserControllerTest {
     @Test
     public void testGetUser() {
         User user = new User();
-        String userId = "1";
+        Long userId = 1L;
         Map<Integer, String> sampleAddress = new HashMap<Integer,String>();
         sampleAddress.putIfAbsent(1,"Yammy Town");
         user.setId(userId);
@@ -101,8 +106,8 @@ public class UserControllerTest {
         user.setHashedPassword("BestPasswordEver");
 
 
-        Mockito.when(userService.getUser(String.valueOf(userId))).thenReturn(user);
-        ResponseEntity<User> responseEntity = controller.getUser(String.valueOf(userId));
+        Mockito.when(userService.getUser(userId)).thenReturn(user);
+        ResponseEntity<User> responseEntity = controller.getUser(userId);
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -125,13 +130,13 @@ public class UserControllerTest {
     @Test
     public void testDeleteUser() {
         User user = new User();
-        user.setId("1");
+        user.setId(1L);
 
-        when(userService.getUser("1")).thenReturn(user);
+        when(userService.getUser(1L)).thenReturn(user);
 
-        ResponseEntity<Object> responseEntity = controller.deleteUser("1");
+        ResponseEntity<Void> responseEntity = controller.deleteUser(1L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(userService, times(1)).deleteUser("1");
+        verify(userService, times(1)).deleteUser(1L);
     }
 }

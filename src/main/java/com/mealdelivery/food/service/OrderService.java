@@ -38,7 +38,7 @@ public class OrderService {
         return orderRepository.findById(orderId).orElse(null);
     }
 
-    public Order setOrder(String address, boolean needChange, double cash, Integer... positionId) {
+    public Order setOrder(String address, boolean needChange, boolean change, double cash, Integer... positionId) {
         List<Position> listOfPositions = new ArrayList<>();
         List<Integer> listOfIds = new ArrayList<>();
         for(int i = 0; i < positionId.length; i++){
