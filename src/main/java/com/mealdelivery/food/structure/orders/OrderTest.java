@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class OrderTest {
     private Order order;
-    private final Timestamp testTimestamp = Timestamp.valueOf(LocalDateTime.now());
+    private final Instant testTime = Instant.from(LocalDateTime.now());
     private List<Integer> positions = new ArrayList<>();
 
     @Before
@@ -23,7 +24,7 @@ public class OrderTest {
         positions.add(14);
         positions.add(42);
         String courierId = "1341L";
-        order = new Order(id, testTimestamp, null, null, "Hometown 15",
+        order = new Order(id, testTime, null, null, "Hometown 15",
                           positions, courierId, 3456D, OrderStatus.CREATED, true, 5000);
     }
 
@@ -35,7 +36,7 @@ public class OrderTest {
 
     @Test
     public void testOrderPlacedAt() {
-        assertEquals(testTimestamp, order.getOrderPlacedAt());
+        assertEquals(testTime, order.getOrderPlacedAt());
     }
 
     @Test
@@ -78,7 +79,7 @@ public class OrderTest {
 
     @Test
     public void testCustomerNeedChange() {
-        assertTrue(order.customerNeedChange);
+        assertTrue(order.isCustomerNeedChange());
     }
 
     @Test

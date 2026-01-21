@@ -1,8 +1,10 @@
 package com.mealdelivery.food.structure.users;
 
+import com.mealdelivery.food.structure.delivery.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,27 +13,24 @@ import java.util.Map;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "users")
 public class User {
 
     @Id
-    Long id;
+    private Long id;
 
-    String name;
-    String email;
-    Long phone;
-    Map<Integer, String> address;
-    String hashedPassword;
-    UserStatus userStatus;
-    List<Integer> orderIdList;
-    EmployeeState employeeState;
+    private String name;
+    private String email;
+    private Long phone;
 
-    public User() {
+    private Address address;
 
-    }
+    private String hashedPassword;
+    private UserStatus userStatus;
 
-    public void setHashedPassword(String password) {
-     //   this.hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-    }
+    private List<Integer> orderIdList;
+
+    private EmployeeState employeeState;
 }
