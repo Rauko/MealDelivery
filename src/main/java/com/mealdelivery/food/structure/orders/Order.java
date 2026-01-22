@@ -32,6 +32,7 @@ public class Order {
 
     private OrderStatus orderStatus;
 
+    private boolean payByCard;
     private boolean customerNeedChange;
     private double changeFrom;
 }
