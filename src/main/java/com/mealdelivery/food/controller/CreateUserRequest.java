@@ -1,5 +1,6 @@
 package com.mealdelivery.food.controller;
 
+import com.mealdelivery.food.structure.delivery.Address;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class CreateUserRequest {
     private Long phone;
 
     @NotBlank
-    private String address;
+    private Address address;
 
     @NotBlank
     private String password;
