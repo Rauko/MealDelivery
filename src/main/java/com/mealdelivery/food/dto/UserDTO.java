@@ -8,18 +8,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+
+    private Long id;
+
     private String name;
     private String email;
-    private Integer phone;
-    private List<Address> address;
-    private String hashedPassword;
+    private Long phone;
+
+    private Address address;
+
     private UserStatus userStatus;
-    private EmployeeState runnerStatus;
+    private EmployeeState employeeState;
 }

@@ -50,7 +50,7 @@ public class PositionController {
             positionService.editPositionDescription(positionId, request.getDescription());
         }
         if(request.getWeight() != null){
-            positionService.editpositionWeight(positionId, request.getWeight());
+            positionService.editPositionWeight(positionId, request.getWeight());
         }
         if(request.getIngredients() != null){
             positionService.editPositionIngredients(positionId, request.getIngredients());

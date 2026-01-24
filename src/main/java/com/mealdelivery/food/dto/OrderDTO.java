@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,12 +15,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
+
+    private Long orderId;
+
+    private Instant orderPlacedAt;
+    private Instant orderTossedToDelivery;
+    private Instant orderDelivered;
+
     private String addressToDeliver;
     private List<Integer> positionsIds;
-    private LocalDateTime creationDate;
-   // private Runner courier;
+
+    private String courier;
+
+    private double price;
     private OrderStatus orderStatus;
-    private double orderPrice;
+
+    private boolean payByCard;
     private boolean customerNeedChange;
     private double changeFrom;
 }

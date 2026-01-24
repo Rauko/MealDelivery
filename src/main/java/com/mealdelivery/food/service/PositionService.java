@@ -82,7 +82,7 @@ public class PositionService {
         return positionRepository.save(position);
     }
 
-    public Position editVisibility(Integer positionId, Visibility newVisibility) {
+    public Position editPositionVisibility(Integer positionId, Visibility newVisibility) {
         Position position = getPositionOrThrow(positionId);
         position.setVisibility(newVisibility);
         return positionRepository.save(position);
