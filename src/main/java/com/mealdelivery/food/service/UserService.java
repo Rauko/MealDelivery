@@ -6,20 +6,16 @@ import com.mealdelivery.food.structure.users.EmployeeState;
 import com.mealdelivery.food.structure.users.User;
 import com.mealdelivery.food.structure.users.UserStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -38,20 +34,23 @@ public class UserService {
                            String email,
                            Long phone,
                            Address address,
-                           String rawPassword) {
+                           String newRawPassword) {
+
+        String encodedPassword = passwordEncoder.encode(newRawPassword);
+
         User user = User.builder()
                 .name(name)
                 .email(email)
                 .phone(phone)
                 .address(address)
-                .hashedPassword(rawPassword) //need be replaced with password encoder
+                .hashedPassword(encodedPassword) //need be replaced with password encoder
                 .userStatus(UserStatus.NEWLY_CREATED)
                 .employeeState(EmployeeState.NOT_EMPLOYEE)
                 .build();
         return userRepository.insert(user);
     }
 
-    public User deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         if(!userRepository.existsById(userId)) {
             throw new IllegalArgumentException("User not found: " + userId);
         }
@@ -82,9 +81,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User setHashedPassword(Long userId, String newPassword) {
+    public User setHashedPassword(Long userId, String newRawPassword) {
         User user = getUserOrThrow(userId);
-        user.setHashedPassword(newPassword); //PasswordEncoder
+
+        String encodedPassword = passwordEncoder.encode(newRawPassword);
+        user.setHashedPassword(encodedPassword);
+
         return userRepository.save(user);
     }
 
