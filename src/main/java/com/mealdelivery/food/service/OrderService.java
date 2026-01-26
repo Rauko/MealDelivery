@@ -60,7 +60,7 @@ public class OrderService {
                 .mapToDouble(Position::getPositionPrice)
                 .sum();
 
-            Order order = Order.builder()
+        Order order = Order.builder()
                     .addressToDeliver(address)
                     .positionIds(ids)
                     .price(totalPrice)
@@ -70,107 +70,116 @@ public class OrderService {
                     .changeFrom(cash-totalPrice)
                     .build();
 
-            return orderRepository.insert(order);
+        return orderRepository.insert(order);
+    }
+
+    public Order createOrder(Long orderId, OrderStatus status) {
+        Order order = getOrderOrThrow(orderId);
+
+        order.setOrderStatus(status);
+        order.setOrderPlacedAt(Instant.now());
+
+        return orderRepository.save(order);
+    }
+
+    public Order acceptOrder(Long orderId) {
+        Order order = getOrderOrThrow(orderId);
+        order.setOrderStatus(OrderStatus.ACCEPTED);
+        return orderRepository.save(order);
+    }
+
+    public Order cancelOrder(Long orderId) {
+        Order order = getOrderOrThrow(orderId);
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        return orderRepository.save(order);
+    }
+
+    public void deleteOrder(Long orderId) {
+        if(!orderRepository.existsById(orderId)) {
+            throw new IllegalArgumentException("Order not found: " + orderId);
+        }
+        orderRepository.deleteById(orderId);
+    }
+
+    public void deleteAllCanceledOrders() {
+        List<Order> cancelled = orderRepository.findAll()
+                .stream()
+                .filter(o -> o.getOrderStatus() == OrderStatus.CANCELLED)
+                .toList();
+
+        cancelled.forEach(o -> orderRepository.deleteById(o.getOrderId()));
+    }
+
+    public Order setOrderTossedToDeliveryTimestamp(Long orderId) {
+        Order order = getOrderOrThrow(orderId);
+        order.setOrderTossedToDelivery(Instant.now());
+        order.setOrderStatus(OrderStatus.DELIVERY);
+        return orderRepository.save(order);
+    }
+
+    public Order setOrderDeliveredTimestamp(Long orderId) {
+        Order order = getOrderOrThrow(orderId);
+        order.setOrderDelivered(Instant.now());
+        order.setOrderStatus(OrderStatus.COMPLETED);
+        return orderRepository.save(order);
+    }
+
+    public Order changeAddressToDeliver(Long orderId, String newAddress) {
+        Order order = getOrderOrThrow(orderId);
+
+        if(order.getOrderTossedToDelivery() != null) {
+            throw new IllegalArgumentException
+                    ("Cannot change delivery address: order already tossed to delivery.");
         }
 
-        public Order createOrder(Long orderId, OrderStatus status) {
-            Order order = getOrderOrThrow(orderId);
+        order.setAddressToDeliver(newAddress);
+        return orderRepository.save(order);
+    }
 
-            order.setOrderStatus(status);
-            order.setOrderPlacedAt(Instant.now());
+    public Order setCourier(Long orderId) {
+        Order order = getOrderOrThrow(orderId);
 
-            return orderRepository.save(order);
+        List<User> couriers = userRepository.findAll()
+                .stream()
+                .filter(u -> u.getUserStatus() == UserStatus.COURIER)
+                .filter(u -> u.getEmployeeState() == EmployeeState.AVAILABLE)
+                .toList();
+
+        if(couriers.isEmpty()) {
+            throw new IllegalArgumentException("No available courier right now.");
         }
 
-        public Order acceptOrder(Long orderId) {
-            Order order = getOrderOrThrow(orderId);
-            order.setOrderStatus(OrderStatus.ACCEPTED);
-            return orderRepository.save(order);
-        }
+        User courier = couriers.get(new Random().nextInt(couriers.size()));
 
-        public Order cancelOrder(Long orderId) {
-            Order order = getOrderOrThrow(orderId);
-            order.setOrderStatus(OrderStatus.CANCELLED);
-            return orderRepository.save(order);
-        }
+        order.setCourier(String.valueOf(courier.getId()));
 
-        public void deleteOrder(Long orderId) {
-            if(!orderRepository.existsById(orderId)) {
-                throw new IllegalArgumentException("Order not found: " + orderId);
-            }
-            orderRepository.deleteById(orderId);
-        }
+        return orderRepository.save(order);
+    }
 
-        public void deleteAllCanceledOrders() {
-            List<Order> cancelled = orderRepository.findAll()
-                    .stream()
-                    .filter(o -> o.getOrderStatus() == OrderStatus.CANCELLED)
-                    .toList();
+    public Order setDirectCourier(Long orderId,String courierId) {
+        Order order = getOrderOrThrow(orderId);
+        order.setCourier(courierId);
+        return orderRepository.save(order);
+    }
 
-            cancelled.forEach(o -> orderRepository.deleteById(o.getOrderId()));
-        }
+    public Order changeOrderStatus(Long orderId, OrderStatus newStatus) {
+        Order order = getOrderOrThrow(orderId);
+        order.setOrderStatus(newStatus);
+        return orderRepository.save(order);
+    }
 
-        public Order setOrderTossedToDeliveryTimestamp(Long orderId) {
-            Order order = getOrderOrThrow(orderId);
-            order.setOrderTossedToDelivery(Instant.now());
-            order.setOrderStatus(OrderStatus.DELIVERY);
-            return orderRepository.save(order);
-        }
+    public Order customerNeedChange(Long orderId, boolean needChange) {
+        Order order = getOrderOrThrow(orderId);
+        order.setCustomerNeedChange(needChange);
+        return orderRepository.save(order);
+    }
 
-        public Order setOrderDeliveredTimestamp(Long orderId) {
-            Order order = getOrderOrThrow(orderId);
-            order.setOrderDelivered(Instant.now());
-            order.setOrderStatus(OrderStatus.COMPLETED);
-            return orderRepository.save(order);
-        }
+    public void deleteAllCancelledOrders() {
+        List<Order> cancelled = orderRepository.findAll()
+                .stream()
+                .filter(o -> o.getOrderStatus() == OrderStatus.CANCELLED)
+                .toList();
 
-        public Order changeAddressToDeliver(Long orderId, String newAddress) {
-            Order order = getOrderOrThrow(orderId);
-
-            if(order.getOrderTossedToDelivery() != null) {
-                throw new IllegalArgumentException
-                        ("Cannot change delivery address: order already tossed to delivery.");
-            }
-
-            order.setAddressToDeliver(newAddress);
-            return orderRepository.save(order);
-        }
-
-        public Order setCourier(Long orderId) {
-            Order order = getOrderOrThrow(orderId);
-
-            List<User> couriers = userRepository.findAll()
-                    .stream()
-                    .filter(u -> u.getUserStatus() == UserStatus.COURIER)
-                    .filter(u -> u.getEmployeeState() == EmployeeState.AVAILABLE)
-                    .toList();
-
-            if(couriers.isEmpty()) {
-                throw new IllegalArgumentException("No available courier right now.");
-            }
-
-            User courier = couriers.get(new Random().nextInt(couriers.size()));
-
-            order.setCourier(String.valueOf(courier.getId()));
-
-            return orderRepository.save(order);
-        }
-
-        public Order setDirectCourier(Long orderId,String courierId) {
-            Order order = getOrderOrThrow(orderId);
-            order.setCourier(courierId);
-            return orderRepository.save(order);
-        }
-
-        public Order changeOrderStatus(Long orderId, OrderStatus newStatus) {
-            Order order = getOrderOrThrow(orderId);
-            order.setOrderStatus(newStatus);
-            return orderRepository.save(order);
-        }
-
-        public Order customerNeedChange(Long orderId, boolean needChange) {
-            Order order = getOrderOrThrow(orderId);
-            order.setCustomerNeedChange(needChange);
-            return orderRepository.save(order);
-        }
+        cancelled.forEach(o -> orderRepository.deleteById(o.getOrderId()));
+    }
 }

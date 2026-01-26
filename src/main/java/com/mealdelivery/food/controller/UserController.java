@@ -1,5 +1,7 @@
 package com.mealdelivery.food.controller;
 
+import com.mealdelivery.food.UserMapper;
+import com.mealdelivery.food.dto.UserDTO;
 import com.mealdelivery.food.service.UserService;
 import com.mealdelivery.food.structure.users.User;
 import com.mealdelivery.food.structure.users.UserStatus;
@@ -19,17 +21,22 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+
+        List<UserDTO> users = userService.getAllUsers()
+                .stream()
+                .map(UserMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.getUser(userId));
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(UserMapper.toDTO(userService.getUser(userId)));
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody CreateUserRequest request) {
         User user = userService.createUser(
                 request.getName(),
                 request.getEmail(),
@@ -37,7 +44,7 @@ public class UserController {
                 request.getAddress(),
                 request.getPassword()
         );
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserMapper.toDTO(user));
     }
 
     @PatchMapping("/{userId}")

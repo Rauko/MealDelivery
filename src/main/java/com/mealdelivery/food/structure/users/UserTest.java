@@ -1,51 +1,46 @@
 package com.mealdelivery.food.structure.users;
 
+import com.mealdelivery.food.structure.delivery.Address;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class UserTest {
+
     private User user;
-    private String hashedPassword;
-    private Map<Integer, String> sampleAddress = new HashMap<Integer,String>();
-    private List<Integer> orderIdList = new ArrayList<>();
 
     @Before
     public void setUp() {
-        sampleAddress.putIfAbsent(1,"Yammy Town");
-        String id = "1";
-        user = new User(id, "Degustier Fatso",
-                            "fatso@example.com",
-                            1234567890L,
-                                  sampleAddress,
-                     null,
-                                  UserStatus.NEWLY_CREATED,
-                                  orderIdList,
-                                  EmployeeState.NOT_EMPLOYEE);
-        user.setHashedPassword("BestPasswordEver");
-        hashedPassword = user.getHashedPassword();
+        Address address = new Address(
+                "Ukraine",
+                "Kyiv region",
+                "Kyiv",
+                "Main Street",
+                "10",
+                "25"
+        );
+
+        user = User.builder()
+                .id(1L)
+                .name("Degustier Fatso")
+                .email("fatso@example.com")
+                .phone(1234567890L)
+                .address(address)
+                .hashedPassword("BestPasswordEver")
+                .userStatus(UserStatus.NEWLY_CREATED)
+                .employeeState(EmployeeState.NOT_EMPLOYEE)
+                .build();
     }
 
     @Test
     public void testGetId() {
-        Long expectedId = 1L;
-        assertEquals(expectedId, user.getId());
+        assertEquals(Long.valueOf(1L), user.getId());
     }
     @Test
     public void testGetName() {
         assertEquals("Degustier Fatso", user.getName());
-    }
-
-    @Test
-    public void testOrderList() {
-        List<Integer> expectedOrderIdList = new ArrayList<>();
-        assertEquals(expectedOrderIdList, user.getOrderIdList());
     }
 
     @Test
@@ -55,18 +50,19 @@ public class UserTest {
 
     @Test
     public void testGetPhone() {
-        assertEquals((Integer) 1234567890, user.getPhone());
+        assertEquals(Long.valueOf(123456789L), user.getPhone());
     }
 
     @Test
     public void testGetAddress() {
-        assertEquals("Yammy Town", user.getAddress().get(1));
+        assertNotNull(user.getAddress());
+        assertEquals("Kyiv", user.getAddress().getCity());
+        assertEquals("Main Street", user.getAddress().getStreet());
     }
 
     @Test
     public void testGetHashedPassword() {
-        //checking that it is actually saved for now... no hashing
-        assertEquals(hashedPassword, user.getHashedPassword());
+        assertEquals("BestPasswordEver", user.getHashedPassword());
     }
 
     @Test
