@@ -3,9 +3,7 @@ package com.mealdelivery.food.structure.orders;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,23 +13,37 @@ import static org.junit.Assert.assertTrue;
 
 public class OrderTest {
     private Order order;
-    private final Instant testTime = Instant.from(LocalDateTime.now());
-    private List<Integer> positions = new ArrayList<>();
+    private Instant testTime;
+    private List<Integer> positions;
 
     @Before
     public void setUp() {
-        Long id = 1L;
+
+        testTime = Instant.now();
+
+        positions = new ArrayList<>();
         positions.add(14);
         positions.add(42);
-        String courierId = "1341L";
-        order = new Order(id, testTime, null, null, "Hometown 15",
-                          positions, courierId, 3456D, OrderStatus.CREATED, true, 5000);
+
+        order = Order.builder()
+                .orderId(1L)
+                .orderPlacedAt(testTime)
+                .orderTossedToDelivery(null)
+                .orderDelivered(null)
+                .addressToDeliver("Hometown 15")
+                .positionIds(positions)
+                .courier("1341")
+                .price(3456D)
+                .orderStatus(OrderStatus.CREATED)
+                .customerNeedChange(true)
+                .changeFrom(5000D)
+                .payByCard(false)
+                .build();
     }
 
     @Test
     public void testOrderId() {
-        Long expectedI = 1L;
-        assertEquals(expectedI, order.getOrderId());
+        assertEquals(Long.valueOf(1L), order.getOrderId());
     }
 
     @Test
@@ -68,8 +80,7 @@ public class OrderTest {
 
     @Test
     public void testCourierId() {
-        Long courierId = 1341L;
-        assertEquals(courierId, order.getCourier());
+        assertEquals("1341", order.getCourier());
     }
 
     @Test
